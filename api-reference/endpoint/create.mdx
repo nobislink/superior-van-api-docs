@@ -1,4 +1,76 @@
 ---
-title: 'Create Plant'
-openapi: 'POST /plants'
+title: 'Create Lead'
+openapi: 'POST /leads'
 ---
+
+Send an ADF-formatted lead (as JSON) to Superior Van for processing. The response returns a `leadId` you can use to query status.
+
+<Note>Send `Authorization: Bearer <token>` and `Content-Type: application/json` on every request. Use the sandbox base URL while testing.</Note>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST "https://sandbox.superiorvan.com/v1/leads" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Alex",
+    "lastName": "Rivers",
+    "email": "alex.rivers@example.com",
+    "phone": "502-555-1234",
+    "vehicleYear": "2025",
+    "vehicleMake": "Toyota",
+    "vehicleModel": "Sienna",
+    "vehicleMiles": "12000"
+  }'
+```
+
+</RequestExample>
+
+### Authorizations
+
+<ParamField path="Authorization" type="string" required placeholder="Bearer <token>">
+  Bearer access token issued to your vendor account.
+</ParamField>
+
+### Body
+
+- Content-Type: `application/json`
+- ADF fields (as JSON) must include a `customer` contact and can optionally include vehicle and provider details.
+
+<ParamField path="firstName" type="string" required>
+  Customer first name.
+</ParamField>
+<ParamField path="lastName" type="string" required>
+  Customer last name.
+</ParamField>
+<ParamField path="email" type="string" required>
+  Customer email address.
+</ParamField>
+<ParamField path="phone" type="string">
+  Customer phone number.
+</ParamField>
+<ParamField path="vehicleYear" type="string">
+  Vehicle model year.
+</ParamField>
+<ParamField path="vehicleMake" type="string">
+  Vehicle make.
+</ParamField>
+<ParamField path="vehicleModel" type="string">
+  Vehicle model.
+</ParamField>
+<ParamField path="vehicleMiles" type="string">
+  Vehicle mileage.
+</ParamField>
+
+<ResponseExample>
+
+```json 201 Response
+{
+  "leadId": "lead_abc123",
+  "status": "received",
+  "message": "Lead accepted"
+}
+```
+
+</ResponseExample>

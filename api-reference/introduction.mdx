@@ -1,33 +1,41 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'API Overview'
+description: 'Authentication, base URLs, and response patterns for the Superior Van Partner API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## What this covers
 
-## Welcome
+Use this section to understand how to authenticate, which base URL to call, and what to expect in responses. The OpenAPI file powers the endpoint examples in this docs site.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Base URLs
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+| Environment | URL |
+| --- | --- |
+| Production | `https://api.superiorvan.com/v1` |
+| Sandbox | `https://sandbox.superiorvan.com/v1` |
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Every request must include your vendor access token:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```http
+POST /leads HTTP/1.1
+Host: api.superiorvan.com
+Authorization: Bearer <token>
+Content-Type: application/json
 ```
+
+Requests without a valid token return `401 Unauthorized`.
+
+## Error handling
+
+- `400 Bad Request` — validation failed or a required field is missing.
+- `401 Unauthorized` — missing or invalid `x-api-key`.
+- `404 Not Found` — the referenced contact or deal does not exist.
+- `409 Conflict` — a resource already exists for the provided identifiers.
+- `5xx` — unexpected errors; retry with backoff or contact support.
+
+## Endpoints in this release
+
+- **Create Lead** — send ADF XML leads from your system to Superior Van.
+- **Get Lead** — retrieve current status and notes for a submitted lead.

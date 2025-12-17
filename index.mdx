@@ -1,97 +1,37 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Get Started"
+description: "How vendors connect to Superior Van & Mobility through the Partner API"
 ---
 
-## Setting up
+## About Superior Van & Mobility
 
-Get your documentation site up and running in minutes.
+Superior Van & Mobility is the nation's largest family-owned mobility dealer, known for accessible vans, lifts, and adaptive driving equipment backed by nationwide service and support. The Partner API lets vendors securely share contacts and deal activity so Superior Van teams can respond quickly and keep both systems in sync.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+## What the Partner API is for
 
-## Make it yours
+- Send new contact or lead information captured in your apps or forms.
+- Keep contact details synchronized when customers update their info.
+- Create and update deals so Superior Van reps can track stage, vehicle interests, and pricing.
+- Maintain a single source of truth for scheduling, financing, and follow-up.
 
-Design a docs site that looks great and empowers your users.
+## How it works
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+- Vendors send ADF leads as JSON to Superior Van via HTTPS.
+- Each vendor receives an access token. Include `Authorization: Bearer <token>` on every request.
+- Responses include a `leadId` you can use to check status updates.
 
-## Create beautiful pages
+## Access and authentication
 
-Everything you need to create world-class documentation.
+1. Request an API key from the Superior Van partner team.
+2. Use the base URL for your environment:
+   - Production: `https://api.superiorvan.com/v1`
+   - Sandbox: `https://sandbox.superiorvan.com/v1`
+3. Send the header `x-api-key: <your key>` with every call.
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Typical vendor flow
 
-## Need inspiration?
+1. Capture a lead in your system.
+2. Call **Create Lead** with ADF XML to register it with Superior Van.
+3. Use **Get Lead** with the returned `leadId` to see current status and notes.
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+Use the Quickstart to send your first request, then explore the API Reference for details and examples.
