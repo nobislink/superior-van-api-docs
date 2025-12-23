@@ -6,8 +6,8 @@ description: "Send your first request to the Superior Van Partner API"
 Follow these steps to authenticate with Superior Van & Mobility and send your first ADF lead.
 
 <Steps>
-<Step title="Request your access token">
-Ask your Superior Van partner contact for an access token. Send it on every request in the `Authorization: Bearer <token>` header.
+<Step title="Request your API key">
+Ask your Superior Van partner contact for an API key. Send it on every request in the `x-api-key` header.
 </Step>
 
 <Step title="Set your environment">
@@ -15,7 +15,7 @@ Work in sandbox first:
 
 ```bash
 # Set environment variables for your tooling
-export SUPERIORVAN_API_TOKEN="<your-token>"
+export SUPERIORVAN_API_KEY="<your-api-key>"
 export SUPERIORVAN_BASE_URL="https://sandbox.superiorvan.com/v1"
 ```
 
@@ -25,25 +25,17 @@ Use `https://api.superiorvan.com/v1` when you are ready for production.
 <Step title="Create your first lead (JSON)">
 ```bash
 curl -X POST "$SUPERIORVAN_BASE_URL/leads" \
-  -H "Authorization: Bearer $SUPERIORVAN_API_TOKEN" \
+  -H "x-api-key: $SUPERIORVAN_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "requestdate": "2025-01-12T18:00:00Z",
-    "vehicle": {
-      "year": "2025",
-      "make": "Toyota",
-      "model": "Sienna",
-      "comments": "Needs side-entry ramp."
-    },
-    "customer": {
-      "firstName": "Alex",
-      "lastName": "Rivers",
-      "email": "alex.rivers@example.com",
-      "phone": "502-555-1234"
-    },
-    "provider": {
-      "name": "Vendor Partner"
-    }
+    "firstName": "Alex",
+    "lastName": "Rivers",
+    "email": "alex.rivers@example.com",
+    "phone": "502-555-1234",
+    "vehicleYear": "2025",
+    "vehicleMake": "Toyota",
+    "vehicleModel": "Sienna",
+    "vehicleMiles": "12000"
   }'
 ```
 </Step>
@@ -53,14 +45,14 @@ Use the returned `leadId` to check status updates.
 
 ```bash
 curl -X GET "$SUPERIORVAN_BASE_URL/leads/lead_12345" \
-  -H "Authorization: Bearer $SUPERIORVAN_API_TOKEN"
+  -H "x-api-key: $SUPERIORVAN_API_KEY"
 ```
 </Step>
 </Steps>
 
 ## Required headers
 
-- `Authorization: Bearer <token>` (required on every request).
+- `x-api-key: <your-api-key>` (required on every request).
 - `Content-Type: application/json`
 
 ## Status codes to expect

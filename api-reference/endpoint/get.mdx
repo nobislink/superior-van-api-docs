@@ -5,12 +5,12 @@ openapi: 'GET /leads/{leadId}'
 
 Retrieve the current status and notes for a submitted lead using the `leadId` returned from **Create Lead**.
 
-<Note>Send `Authorization: Bearer <token>` with every request.</Note>
+<Note>Send `x-api-key` header with every request.</Note>
 
 ### Authorizations
 
-<ParamField path="Authorization" type="string" required placeholder="Bearer <token>">
-  Bearer access token issued to your vendor account.
+<ParamField path="x-api-key" type="string" required placeholder="<your-api-key>">
+  API key issued to your vendor account.
 </ParamField>
 
 ### Parameters
@@ -30,7 +30,7 @@ Retrieve the current status and notes for a submitted lead using the `leadId` re
 <ResponseField name="notes" type="string">
   Internal notes about the lead.
 </ResponseField>
-<ResponseField name="createdAt" type="string" required>
+<ResponseField name="createdAt" type="string">
   Lead creation timestamp (ISO 8601).
 </ResponseField>
 
@@ -38,7 +38,7 @@ Retrieve the current status and notes for a submitted lead using the `leadId` re
 
 ```bash cURL
 curl -X GET "https://sandbox.superiorvan.com/v1/leads/lead_abc123" \
-  -H "Authorization: Bearer <token>"
+  -H "x-api-key: <your-api-key>"
 ```
 
 </RequestExample>

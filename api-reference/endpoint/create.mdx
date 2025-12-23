@@ -5,13 +5,13 @@ openapi: 'POST /leads'
 
 Send an ADF-formatted lead (as JSON) to Superior Van for processing. The response returns a `leadId` you can use to query status.
 
-<Note>Send `Authorization: Bearer <token>` and `Content-Type: application/json` on every request. Use the sandbox base URL while testing.</Note>
+<Note>Send `x-api-key` header and `Content-Type: application/json` on every request. Use the sandbox base URL while testing.</Note>
 
 <RequestExample>
 
 ```bash cURL
 curl -X POST "https://sandbox.superiorvan.com/v1/leads" \
-  -H "Authorization: Bearer <token>" \
+  -H "x-api-key: <your-api-key>" \
   -H "Content-Type: application/json" \
   -d '{
     "firstName": "Alex",
@@ -29,14 +29,13 @@ curl -X POST "https://sandbox.superiorvan.com/v1/leads" \
 
 ### Authorizations
 
-<ParamField path="Authorization" type="string" required placeholder="Bearer <token>">
-  Bearer access token issued to your vendor account.
+<ParamField path="x-api-key" type="string" required placeholder="<your-api-key>">
+  API key issued to your vendor account.
 </ParamField>
 
 ### Body
 
 - Content-Type: `application/json`
-- ADF fields (as JSON) must include a `customer` contact and can optionally include vehicle and provider details.
 
 <ParamField path="firstName" type="string" required>
   Customer first name.
@@ -63,13 +62,21 @@ curl -X POST "https://sandbox.superiorvan.com/v1/leads" \
   Vehicle mileage.
 </ParamField>
 
+### Response
+
+<ResponseField name="leadId" type="string">
+  Unique identifier assigned to the lead.
+</ResponseField>
+<ResponseField name="status" type="string">
+  Initial status of the lead (e.g., received).
+</ResponseField>
+
 <ResponseExample>
 
 ```json 201 Response
 {
   "leadId": "lead_abc123",
-  "status": "received",
-  "message": "Lead accepted"
+  "status": "received"
 }
 ```
 

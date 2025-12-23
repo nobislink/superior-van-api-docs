@@ -16,16 +16,16 @@ Use this section to understand how to authenticate, which base URL to call, and 
 
 ## Authentication
 
-Every request must include your vendor access token:
+Every request must include your vendor API key:
 
 ```http
 POST /leads HTTP/1.1
 Host: api.superiorvan.com
-Authorization: Bearer <token>
+x-api-key: <your-api-key>
 Content-Type: application/json
 ```
 
-Requests without a valid token return `401 Unauthorized`.
+Requests without a valid API key return `401 Unauthorized`.
 
 ## Error handling
 

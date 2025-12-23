@@ -80,6 +80,17 @@
      "vscode"
    ]
   },
+  "api": {
+    "playground": {
+      "display": "interactive",
+      "proxy": true
+    },
+    "examples": {
+      "languages": ["curl", "javascript", "python"],
+      "defaults": "required",
+      "prefill": true
+    }
+  },
   "footer": {
     "socials": {
       "x": "https://x.com/mintlify",

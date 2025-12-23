@@ -20,7 +20,7 @@
   ],
   "security": [
     {
-      "bearerAuth": []
+      "apiKeyAuth": []
     }
   ],
   "paths": {
@@ -31,7 +31,7 @@
         "description": "Submit an ADF-formatted lead for Superior Van to process.",
         "security": [
           {
-            "bearerAuth": []
+            "apiKeyAuth": []
           }
         ],
         "requestBody": {
@@ -128,7 +128,7 @@
         "description": "Retrieve lead status and notes using the leadId returned from the create endpoint.",
         "security": [
           {
-            "bearerAuth": []
+            "apiKeyAuth": []
           }
         ],
         "parameters": [
@@ -298,10 +298,6 @@
       },
       "LeadSubmissionResponse": {
         "type": "object",
-        "required": [
-          "leadId",
-          "status"
-        ],
         "properties": {
           "leadId": {
             "type": "string",
@@ -313,10 +309,6 @@
               "received"
             ],
             "description": "Initial status of the lead"
-          },
-          "message": {
-            "type": "string",
-            "description": "Optional confirmation message"
           }
         }
       },
@@ -341,10 +333,11 @@
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "description": "Send Authorization: Bearer <token> on every request."
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API key issued to your vendor account"
       }
     }
   }
