@@ -29,6 +29,12 @@
         "summary": "Create lead",
         "operationId": "createLead",
         "description": "Submit an ADF-formatted lead for Superior Van to process.",
+        "x-mint": {
+          "hide": {
+            "authorization": true,
+            "requestBody": true
+          }
+        },
         "security": [
           {
             "apiKeyAuth": []
