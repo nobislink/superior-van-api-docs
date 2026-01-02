@@ -24,11 +24,11 @@
     }
   ],
   "paths": {
-    "/lead": {
+    "/leads": {
       "post": {
         "summary": "Create lead",
         "operationId": "createLead",
-        "description": "Submit a lead for Superior Van to process.",
+        "description": "Submit an ADF-formatted lead for Superior Van to process.",
         "security": [
           {
             "apiKeyAuth": []
@@ -42,25 +42,25 @@
                 "$ref": "#/components/schemas/LeadCreateRequest"
               },
               "example": {
-                "first_name": "John",
-                "last_name": "Doe",
-                "email": "john.doe@example.com",
-                "phone": "555-123-4567",
-                "lead_type": "Sales",
-                "lead_notes": "Customer interested in wheelchair accessible van",
-                "vendor_name": "Example Vendor Company",
-                "external_id": "EXT-12345",
-                "vehicle_year": "2024",
-                "vehicle_make": "Ford",
-                "vehicle_model": "Transit",
-                "vehicle_miles": "15000"
+                "first_name": "Wilhelm",
+                "last_name": "Spilisy",
+                "email": "wspilisyei@themeforest.net",
+                "phone": "502-555-1234",
+                "lead_type": "sales",
+                "lead_notes": "test notes",
+                "vendor_name": "Acme Corp",
+                "external_id": "VENDOR-12345",
+                "vehicle_year": "2025",
+                "vehicle_make": "Toyota",
+                "vehicle_model": "Sienna",
+                "vehicle_miles": "12000"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Lead created successfully",
+          "201": {
+            "description": "Lead accepted",
             "content": {
               "application/json": {
                 "schema": {
@@ -92,7 +92,7 @@
         }
       }
     },
-    "/lead/{leadId}": {
+    "/leads/{leadId}": {
       "get": {
         "summary": "Get lead",
         "operationId": "getLead",
@@ -175,11 +175,12 @@
       },
       "LeadCreateRequest": {
         "type": "object",
-        "description": "Lead payload. Send as application/json.",
+        "description": "ADF lead payload. Send as application/json.",
         "required": [
           "first_name",
           "last_name",
-          "email"
+          "email",
+          "phone"
         ],
         "properties": {
           "first_name": {
@@ -210,11 +211,7 @@
               "Buy-Back",
               "Other"
             ],
-            "description": "Type of lead. Case-insensitive (e.g., 'Sales' or 'sales' both accepted). Defaults to 'Other' if not provided."
-          },
-          "lead_notes": {
-            "type": "string",
-            "description": "Notes about the lead"
+            "description": "Type of lead. Accepts both capitalized and lowercase values (e.g., 'Sales' or 'sales'). Defaults to 'Other' if not provided."
           },
           "vendor_name": {
             "type": "string",
@@ -222,7 +219,11 @@
           },
           "external_id": {
             "type": "string",
-            "description": "Unique identifier from the vendor's internal system"
+            "description": "Unique vendor internal ID for the lead in their system"
+          },
+          "lead_notes": {
+            "type": "string",
+            "description": "Additional notes about the lead"
           },
           "vehicle_year": {
             "type": "string",
@@ -248,6 +249,13 @@
           "leadId": {
             "type": "string",
             "description": "Assigned lead id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "received"
+            ],
+            "description": "Initial status of the lead"
           }
         }
       },

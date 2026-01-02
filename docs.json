@@ -80,6 +80,7 @@
      "vscode"
    ]
   },
+  "openapi": "api-reference/openapi.json",
   "api": {
     "playground": {
       "display": "interactive",
