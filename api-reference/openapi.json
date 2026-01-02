@@ -29,12 +29,6 @@
         "summary": "Create lead",
         "operationId": "createLead",
         "description": "Submit an ADF-formatted lead for Superior Van to process.",
-        "x-mint": {
-          "hide": {
-            "authorization": true,
-            "requestBody": true
-          }
-        },
         "security": [
           {
             "apiKeyAuth": []
@@ -47,28 +41,15 @@
               "schema": {
                 "$ref": "#/components/schemas/LeadCreateRequest"
               },
-              "examples": {
-                "adfLead": {
-                  "summary": "ADF lead",
-                  "value": {
-                    "requestdate": "2025-01-12T18:00:00Z",
-                    "vehicle": {
-                      "year": "2025",
-                      "make": "Toyota",
-                      "model": "Sienna",
-                      "comments": "Needs side-entry ramp."
-                    },
-                    "customer": {
-                      "firstName": "Alex",
-                      "lastName": "Rivers",
-                      "email": "alex.rivers@example.com",
-                      "phone": "502-555-1234"
-                    },
-                    "provider": {
-                      "name": "Vendor Partner"
-                    }
-                  }
-                }
+              "example": {
+                "firstName": "Alex",
+                "lastName": "Rivers",
+                "email": "alex.rivers@example.com",
+                "phone": "502-555-1234",
+                "vehicleYear": "2025",
+                "vehicleMake": "Toyota",
+                "vehicleModel": "Sienna",
+                "vehicleMiles": "12000"
               }
             }
           }
@@ -85,7 +66,7 @@
             }
           },
           "400": {
-            "description": "Validation error (malformed ADF or missing required data)",
+            "description": "JSON body is not formatted correctly",
             "content": {
               "application/json": {
                 "schema": {
@@ -94,28 +75,8 @@
               }
             }
           },
-          "401": {
-            "description": "Missing or invalid API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "A lead already exists for the provided identifiers",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
+          "403": {
+            "description": "Incorrect API key or permissions",
             "content": {
               "application/json": {
                 "schema": {
@@ -159,8 +120,8 @@
               }
             }
           },
-          "401": {
-            "description": "Missing or invalid API key",
+          "403": {
+            "description": "Bad API key",
             "content": {
               "application/json": {
                 "schema": {
@@ -178,16 +139,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
           }
         }
       }
@@ -197,14 +148,8 @@
     "schemas": {
       "Lead": {
         "type": "object",
-        "required": [
-          "id",
-          "status",
-          "createdAt",
-          "updatedAt"
-        ],
         "properties": {
-          "id": {
+          "leadId": {
             "type": "string",
             "description": "Unique lead id from Superior Van"
           },
@@ -223,82 +168,51 @@
           "notes": {
             "type": "string",
             "description": "Internal notes about the lead"
-          },
-          "source": {
-            "type": "string",
-            "description": "Lead source identifier from the vendor system, if provided"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
           }
         }
       },
       "LeadCreateRequest": {
         "type": "object",
-        "description": "ADF lead payload. Send as application/json; fields map to the ADF structure.",
+        "description": "ADF lead payload. Send as application/json.",
         "required": [
-          "customer"
+          "firstName",
+          "lastName",
+          "email",
+          "phone"
         ],
         "properties": {
-          "requestdate": {
+          "firstName": {
             "type": "string",
-            "format": "date-time",
-            "description": "Lead creation timestamp"
+            "description": "Customer first name"
           },
-          "vehicle": {
-            "type": "object",
-            "properties": {
-              "year": {
-                "type": "string"
-              },
-              "make": {
-                "type": "string"
-              },
-              "model": {
-                "type": "string"
-              },
-              "comments": {
-                "type": "string"
-              }
-            }
+          "lastName": {
+            "type": "string",
+            "description": "Customer last name"
           },
-          "customer": {
-            "type": "object",
-            "required": [
-              "firstName",
-              "lastName",
-              "email",
-              "phone"
-            ],
-            "properties": {
-              "firstName": {
-                "type": "string"
-              },
-              "lastName": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "phone": {
-                "type": "string"
-              }
-            }
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Customer email address"
           },
-          "provider": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Lead source or partner name"
-              }
-            }
+          "phone": {
+            "type": "string",
+            "description": "Customer phone number"
+          },
+          "vehicleYear": {
+            "type": "string",
+            "description": "Vehicle model year"
+          },
+          "vehicleMake": {
+            "type": "string",
+            "description": "Vehicle make"
+          },
+          "vehicleModel": {
+            "type": "string",
+            "description": "Vehicle model"
+          },
+          "vehicleMiles": {
+            "type": "string",
+            "description": "Vehicle mileage"
           }
         }
       },
