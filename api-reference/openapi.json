@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/leads": {
+    "/lead": {
       "post": {
         "summary": "Create lead",
         "operationId": "createLead",
