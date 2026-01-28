@@ -42,18 +42,17 @@
                 "$ref": "#/components/schemas/LeadCreateRequest"
               },
               "example": {
-                "first_name": "Alex",
-                "last_name": "Rivers",
-                "email": "alex.rivers@example.com",
+                "first_name": "John",
+                "last_name": "Doe",
+                "email": "customer@example.com",
                 "phone": "502-555-1234",
-                "lead_type": "Sales",
-                "lead_notes": "Customer interested in side-entry wheelchair van",
-                "vendor_name": "Vendor Partner",
-                "external_id": "VENDOR-12345",
-                "vehicle_year": "2025",
-                "vehicle_make": "Toyota",
-                "vehicle_model": "Sienna",
-                "vehicle_miles": "12000"
+                "deal_type": "sales",
+                "vendor_name": "ABC Vendor",
+                "lead_notes": "Customer interested in new van\nFollow up next week",
+                "external_lead_id": "VENDOR-12345",
+                "vehicle_year": "2020",
+                "vehicle_make": "Ford",
+                "vehicle_model": "Transit"
               }
             }
           }
@@ -70,7 +69,7 @@
             }
           },
           "400": {
-            "description": "JSON body is not formatted correctly",
+            "description": "Validation error. Possible causes: JSON body is not formatted correctly, missing required fields (deal_type, vendor_name, lead_notes), invalid deal_type value, or empty required fields. Error messages: 'deal_type must be one of: sales, service, rental, lift, commercial, buy-back, other', 'vendor_name field is missing or empty in request body', 'lead_notes field is missing or empty in request body'",
             "content": {
               "application/json": {
                 "schema": {
@@ -180,7 +179,10 @@
           "first_name",
           "last_name",
           "email",
-          "phone"
+          "phone",
+          "deal_type",
+          "vendor_name",
+          "lead_notes"
         ],
         "properties": {
           "first_name": {
@@ -200,30 +202,34 @@
             "type": "string",
             "description": "Customer phone number"
           },
-          "lead_type": {
+          "deal_type": {
             "type": "string",
             "enum": [
-              "Sales",
-              "Service",
-              "Rental",
-              "Lift",
-              "Commercial",
-              "Buy-Back",
-              "Other"
+              "sales",
+              "service",
+              "rental",
+              "lift",
+              "commercial",
+              "buy-back",
+              "other"
             ],
-            "description": "Type of lead. Accepts both capitalized and lowercase values (e.g., 'Sales' or 'sales'). Defaults to 'Other' if not provided."
+            "description": "Type of deal. Maps to HubSpot dealtype property. Allowed values (case-insensitive): sales → newbusiness, service → existingbusiness, rental → Rental, lift → Lift, commercial → Commercial, buy-back → Buy-Back, other → Other. Returns 400 if missing, empty, or invalid."
           },
           "vendor_name": {
             "type": "string",
-            "description": "Vendor company name"
+            "description": "Vendor company name. Maps to HubSpot vendor_name property. Required field. Returns 400 if missing or empty."
+          },
+          "lead_notes": {
+            "type": "string",
+            "description": "Additional notes about the lead. Maps to HubSpot lead_notes property. Supports multi-line text. Required field. If deal_type is 'other', automatically prepends 'Needs Deal Type. ' to the notes. Returns 400 if missing, null, or empty."
+          },
+          "external_lead_id": {
+            "type": "string",
+            "description": "Vendor's internal lead ID for reference and future searches. Maps to HubSpot external_lead_id property. Optional field."
           },
           "external_id": {
             "type": "string",
             "description": "Unique vendor internal ID for the lead in their system"
-          },
-          "lead_notes": {
-            "type": "string",
-            "description": "Additional notes about the lead"
           },
           "vehicle_year": {
             "type": "string",
